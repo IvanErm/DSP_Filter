@@ -1,0 +1,24 @@
+﻿@model WebUI.ViewModel.FilterBaseViewModel
+@using static System.Math
+<div class="container">
+    <h5>Порядок фильтра: @Model.Order</h5>
+    @if(Model is WebUI.ViewModel.IIRFilterViewModel) {
+    <div class="row">
+            <div class="col-md-auto">
+                <h6><b>Az</b> - коэффициенты числителя передаточной функции цифрового фильтра:</h6>
+                @foreach(var az in Model.Az){
+                    <span>@Round(az, 4)&nbsp;&nbsp;&nbsp;</span> 
+                }
+            </div>
+    </div>   
+    }
+
+    <div class="row">
+            <div class="col-md-auto">
+                <h6><b>Bz</b> - коэффициенты знаменателя передаточной функции цифрового фильтра:</h6>
+                @foreach(var bz in Model.Bz){
+                    <span>@Round(bz, 4)&nbsp;&nbsp;&nbsp;</span> 
+                }
+            </div>
+    </div>
+</div>

@@ -1,0 +1,106 @@
+﻿@{
+    ViewData["Title"] = "Главная страницы";
+}
+
+<details>
+    <summary>
+    	<h1>Входные данные:</h1>
+    </summary>
+	    <ul>
+	      <li><b>Rs </b> - неравномерность в полосе пропускания (Дб)</li>
+	      <li><b>Rp </b> - подавление в полосе заграждение (Дб) </li>
+	      <li><b>Wp </b> - приведенная частота пропускания (значение от 0 до 1) </li>
+	      <li><b>Ws </b> - приведенная частота заграждения (значение от 0 до 1) </li>
+	      <li><b>Filter type </b>
+					- тип фильтра:
+					<ul>
+						<li><i>Lowpass</i> - фильтр нижних частот (ФНЧ)</li>
+						<li><i>Highpass</i> - фильтр верхних частот (ФВЧ)</li>
+						<li><i>Bandpass</i> - полосовой фильтр (ПФ)</li>
+						<li><i>Bandstop</i> - режекторный (заграждающий) фильтр (РФ)</li>
+					</ul>
+		  </li>
+	      <li><b>Order</b> - порядок цифрового фильтра (для КИХ фильтров)</li>
+	    </ul>
+</details>
+
+<details>
+		<summary>
+			<h1>Выходные данные:</h1>	
+		</summary>		    
+	    <ul>
+	      <li><b>Order</b> - порядок цифрового фильтра</li>
+		  <li><b>Az</b> - коэффициенты числителя передаточной функции цифрового фильтра </li><li><b>Bz</b> - коэффициенты знаменателя передаточной функции цифрового фильтра</li>	 
+		  <li><b>AЧХ</b> - амплитудно-частотная характеристика цифрового фильтра </li>
+		  <li><b>ФЧХ</b> - фазо-частотная характеристика цифрового фильтра </li>
+		  
+		  <br/><b>Для БИХ фильтров дополнительно выводятся:</b> 
+	      <li><b>Z</b> - нули фильтра-прототипа </a></li>
+	      <li><b>P</b> - полюса фильтра-прототипа </li>
+	      <li><b>A</b> - коэффициенты числителя передаточной функции фильтра-прототипа </li>
+	      <li><b>B</b> - коэффициенты знаменателя передаточной функции фильтра- прототипа </li>   
+	    </ul>
+
+</details>
+
+<form method="post" class="container-fluid">
+		<legend class="form-label"><u>Выберите класс фильтра:</u></legend>
+		<div class="row">
+			<div class="col-md-2">
+				<input type="radio" id="iir-filter" name="filterClass" value="IIR" checked>
+				<label class="form-check-label h5" for="iir-filter">БИХ</label>			
+			</div>
+			<select name="curvedType" class="custom-select col-md-9">
+				<option value="Batterrfort">Фильтр Баттерворта</option>
+				<option value="Cheby1">Фильтр Чебышева 1 рода</option>
+				<option value="Cheby2">Фильтр Чебышева 2 рода</option>
+				<option value="Elliptic">Фильтр Эллептический</option>
+			</select>
+		</div>
+		<br/>
+		<div class="row">
+			<div class="col-md-2">
+				<input type="radio" id="fir-filter" name="filterClass" value="FIR">
+				<label class="form-check-label h5" for="fir-filter">КИХ</label>		
+			</div>
+			<label class="h5 col-md-2">Order = </label>
+			<input type="number" class="col-md-2 offset col-md-3" name="Order" min="0" max="1000000" step="1" value="4" >
+		</div>
+		<br/>
+		<legend class="form-label"><u>Введите параметры фильтра:</u></legend>
+		<br/>
+		<div class="row">
+			<div class="col-md-3">
+				<label class="h5">Rp = </label>
+			 	<input type="number" name="Rp" min="0" max="1000" step="1" value="3" required>
+			</div>
+			<div class="col-md-3">
+				<label class="h5">Rs = </label>
+			 	<input type="number" name="Rs" min="0" max="1000" step="1" value="50" required>
+			</div>
+			<div class="col-md-3">
+				<label class="h5">Wp = </label>
+			 	<input type="text" name="WpStr" value="0,1" style="width:50px;" required>
+			</div>
+			<div class="col-md-3">
+				<label class="h5">Ws = </label>
+			 	<input type="text" name="WsStr" style="width:50px;" value="0,5" required>
+			</div>
+		</div>
+		<br/>
+		<div class="row" >
+			<label class="h5 col-md-3">Тип фильтра</label>
+			<select name="filterType" class="custom-select col-md-8">
+				<option value="Lowpass">Фильтр нижних частот (ФНЧ)</option>
+				<option value="Highpass">Фильтр верхних частот (ФВЧ)</option>
+				<option value="Bandpass">Полосовой фильтр (ПФ)</option>
+				<option value="Bandstop">Режекторный (заграждающий) фильтр (РФ)</option>
+			</select>
+		</div>
+		<br/>
+		<div class="row">
+			<div class="col-md-2"></div>
+			<button class="btn btn-primary col-md-8">Расчитать фильтр</button>
+			<div class="col-md-2"></div>
+		</div>
+</form>	

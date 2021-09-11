@@ -1,0 +1,48 @@
+﻿@model WebUI.ViewModel.IIRFilterViewModel
+@using static System.Math
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h6><b>Z</b> - нули передаточной функции фильтра-прототипа:</h6>
+            @foreach(var z in Model.Z){
+                <div>
+                    @{
+                        string sign = z.Imaginary >= 0 ? "+" : " ";
+                    }
+                    <span>@String.Format($"{Round(z.Real, 4)}{sign}{Round(z.Imaginary, 4)}i")</span>
+                </div>
+            }
+        </div>
+        <div class="col-md-6">
+            <h6><b>P</b> - полюса передаточной функции фильтра-прототипа:</h6>
+                @foreach(var p in Model.P){
+                     <div>
+                        @{
+                        string sign = p.Imaginary >= 0 ? "+" : " ";
+                        }
+                    <span>@String.Format($"{Round(p.Real, 4)}{sign}{Round(p.Imaginary, 4)}i")</span>
+                    </div>
+                }
+        </div>
+    </div>
+    <br/>
+     <h6><b>A</b> - коэффициенты числителя передаточной функции фильтра-прототипа:</h6>
+    <div class="row">
+            <div class="col-md-auto">
+                @foreach(var a in Model.As){
+                    <span>@Round(a, 3)&nbsp;&nbsp;&nbsp;</span> 
+                }
+            </div>
+    </div>   
+
+    <h6><b>B</b> - коэффициенты знаменятеля передаточной функции фильтра-прототипа:</h6>
+    <div class="row">
+            <div class="col-md-10 offset col-md-1">
+                @foreach(var b in Model.Bs){
+                    <span>@Round(b, 3)&nbsp;&nbsp;&nbsp;</span> 
+                }
+            </div>
+    </div>
+</div>
+<br/>
+

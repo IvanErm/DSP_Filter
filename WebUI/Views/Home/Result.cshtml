@@ -1,0 +1,161 @@
+﻿@model WebUI.ViewModel.FilterBaseViewModel
+@using System.Text.Json;
+@{
+    var XLabels = JsonSerializer.Serialize<List<double>>(Model.W);
+    var Y1Values = JsonSerializer.Serialize<List<double>>(Model.MFC);
+    var Y2Values = JsonSerializer.Serialize<List<double>>(Model.PFC);
+
+    ViewData["Title"] = "Результаты расчета";
+}  
+
+    @{
+        await Html.RenderPartialAsync("_GetFIRResult", Model);
+        <br/>
+    }
+    @if(Model is WebUI.ViewModel.IIRFilterViewModel)
+    {
+        await Html.RenderPartialAsync("_GetIIRResult", Model as WebUI.ViewModel.IIRFilterViewModel);
+    }
+
+<div class="container">  
+    <div class="row">
+        <div class="chart-container col-md-10 offset-md-1">  
+            <canvas id="chart1" style="width:100%;"></canvas>  
+        </div > 
+    </div>
+</div>  
+
+<br />
+
+<div class="container">  
+    <div class="row">
+        <div class="chart-container col-md-10 offset-md-1">  
+            <canvas id="chart2" style="width:100%;"></canvas>  
+        </div > 
+    </div>
+</div> 
+  
+  
+@section Scripts {
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>  
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>  
+<script type="text/javascript">  
+        $(function () {  
+    var chartName1 = "chart1"  
+    var chartName2 = "chart2"  
+        var ctx1 = document.getElementById(chartName1).getContext('2d');  
+        var ctx2 = document.getElementById(chartName2).getContext('2d');  
+
+        var data1 = {  
+                labels: @Html.Raw(XLabels),  
+                datasets: [{  
+                    label: "Амплитудно-частотная характеристика",  
+                    backgroundColor: 'transparent',
+                    borderColor: 'green',
+                    borderWidth: 2,  
+                    data: @Html.Raw(Y1Values),
+
+                    pointHitRadius: 15,
+                    pointBorderColor: 'transparent',
+                    pointBackgroundColor: 'transparent'
+                    }]  
+            };   
+            
+            var data2 = {  
+                labels: @Html.Raw(XLabels),  
+                datasets: [{  
+                    label: "Фазо-частотная характеристика",  
+                    backgroundColor: 'transparent',
+                    borderColor: 'blue',
+                    borderWidth: 2,  
+                    data: @Html.Raw(Y2Values),
+
+                    pointHitRadius: 15,
+                    pointBorderColor: 'transparent',
+                    pointBackgroundColor: 'transparent'
+                    }]  
+            };  
+  
+var options1 = {  
+                maintainAspectRatio: false,
+                responsive: true,
+                scales: {  
+                    yAxes: [{  
+                        ticks: {  
+                            min: 0,  
+                            offset: true,
+                            beginAtZero: true,
+                            max: 1.1
+                        },  
+                        gridLines: {  
+                            display: true,  
+                            color: "rgba(0,0,0,0.2)"  
+                        }  
+}],  
+
+                    xAxes: [{ 
+                        scaleLabel: {
+                        display: true,
+                           labelString: 'Частота, нормированная к частоте дискретизации'
+                        },
+                        ticks: {  
+                            min: 0,
+                            beginAtZero: true,
+                            callback(value) {
+                                return (value/3.141592653589).toFixed(2);
+                            },
+                        },  
+                        gridLines: {  
+                            display: true  
+                        }  
+                    }]  
+                }  
+            };
+            
+var options2 = {  
+                maintainAspectRatio: false,                 
+                scales: {  
+                    yAxes: [{  
+                        ticks: {  
+                             offset: true,
+                        },  
+                        gridLines: {  
+                            display: true,  
+                            color: "rgba(0,0,0,0.2)"  
+                        }  
+}],  
+                    xAxes: [{ 
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Частота, нормированная к частоте дискретизации'
+                        },
+                        ticks: {  
+                            min: 0,
+                            beginAtZero: true,
+                            callback(value) {
+                                return (value/3.141592653589).toFixed(2);
+                            },
+                        },  
+                        gridLines: {  
+                            display: true  
+                        }  
+                    }]  
+                }  
+            };  
+  
+       var myChart1 = new  Chart(ctx1, {  
+                options: options1,  
+                data: data1,  
+                type:'line'  
+  
+            });   
+            
+      var myChart2 = new  Chart(ctx2, {  
+                options: options2,  
+                data: data2,  
+                type:'line'  
+  
+            });  
+        });  
+</script>  
+}
